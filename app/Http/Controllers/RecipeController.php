@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Recipe;
 
-class HomeController extends Controller
+class RecipeController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -17,18 +17,35 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Get recipes list
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function recipeList()
     {
         $recipes = Recipe::orderBy('id', 'desc')->get();
         return view('recipe', ['recipes' => $recipes]);
     }
 
+    /**
+     * Get one recipe
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showRecipe($id)
     {
         $recipe = Recipe::where('id', $id)->first()->toArray();
         return view('showRecipe', ['recipe' => $recipe]);
     }
 
+    /**
+     * Add new recipe
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function addRecipe(Request $request)
     {
         $recipe = ['id' => '', 'title' => '', 'description' => ''];
@@ -43,6 +60,13 @@ class HomeController extends Controller
         return redirect('recipe-list');
     }
 
+    /**
+     * Update recipe
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function updateRecipe($id, Request $request)
     {
         $recipe = Recipe::where('id', $id)->first()->toArray();
@@ -58,6 +82,12 @@ class HomeController extends Controller
         return redirect('recipe-list');
     }
 
+    /**
+     * Remove recipe
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function removeRecipe($id)
     {
         Recipe::where('id', $id)->delete();

@@ -34,7 +34,7 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">{{$recipe ? 'Обновить рецепт' : 'Сохранить рецепт'}}</button>
+                <button type="submit" class="btn btn-primary">{{$recipe['id'] ? 'Обновить рецепт' : 'Сохранить рецепт'}}</button>
             </div>
         </div>
     </form>

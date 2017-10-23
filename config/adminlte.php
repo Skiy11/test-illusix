@@ -121,7 +121,7 @@ return [
         ],
         [
             'text'        => 'Ингридиенты',
-            'url'         => 'ingredient',
+            'url'         => 'ingredient-list',
             'icon'        => 'puzzle-piece',
         ],
     ],
