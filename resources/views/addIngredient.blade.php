@@ -12,7 +12,7 @@
             <label for="inputTitle" class="col-sm-2 col-form-label">Название</label>
             <div class="col-sm-10">
                 <input type="text"
-                       class="form-control"
+                       class="typeahead form-control"
                        id="inputTitle"
                        name="title"
                        placeholder="Название"
@@ -28,4 +28,12 @@
             </div>
         </div>
     </form>
+@stop
+
+@section('js')
+    <script>
+        var path = "{{ route('autocomplete') }}";
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+    <script type='text/javascript' src='{{ asset("js/autocomplite.js") }}'></script>
 @stop

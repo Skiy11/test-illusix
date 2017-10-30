@@ -18,8 +18,11 @@
         <tbody>
         @foreach($ingredients as $ingredient)
             <tr>
-                <td>{{$ingredient->title}}</td>
-                <td>{{$ingredient->description}}</td>
+                <td>
+                    <a href="{{route('recipe-ingredient', ['id' => $ingredient->id])}}">
+                        {{$ingredient->title}}
+                    </a>
+                </td>
                 <td>
                     <a href="{{route('update-ingredient', ['id' => $ingredient->id])}}">
                         <i class="fa fa-pencil-square-o"></i>

@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Recipe;
+use App\Ingredient;
 
 class RecipeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Create a new controller instance
      */
     public function __construct()
     {
@@ -36,8 +35,10 @@ class RecipeController extends Controller
      */
     public function showRecipe($id)
     {
-        $recipe = Recipe::where('id', $id)->first()->toArray();
-        return view('showRecipe', ['recipe' => $recipe]);
+        $recipe = Recipe::findOrFail($id);
+        $ingredients = $recipe->ingredients()->where('recipe_id', $id)->get();
+
+        return view('showRecipe', ['recipe' => $recipe, 'ingredients' => $ingredients]);
     }
 
     /**
@@ -49,14 +50,31 @@ class RecipeController extends Controller
     public function addRecipe(Request $request)
     {
         $recipe = ['id' => '', 'title' => '', 'description' => ''];
+        $ingredients = [];
         if (!$request->isMethod('post')) {
-            return view('addRecipe', ['recipe' => $recipe]);
+            return view('addRecipe', ['recipe' => $recipe, 'ingredients' => $ingredients]);
         }
 
         $recipe = new Recipe();
         $recipe->title = $request->input('title');
         $recipe->description = $request->input('description');
         $recipe->save();
+
+        $ingredientTitles = $request->input('ingredient');
+        $ingredientQuantities = $request->input('quantity');
+        for($i = 0; $i < count($ingredientTitles); $i++) {
+            $ingredient = Ingredient::where('title', $ingredientTitles[$i])->first();
+            if ($ingredient) {
+                $recipe->ingredients()->attach($ingredient->id, ['quantity' => $ingredientQuantities[$i]]);
+            } else {
+                $ingredient = new Ingredient();
+                $ingredient->title = $ingredientTitles[$i];
+                $ingredient->save();
+                $ingredientId = $ingredient->id;
+                $recipe->ingredients()->attach($ingredientId, ['quantity' => $ingredientQuantities[$i]]);
+            }
+        }
+
         return redirect('recipe-list');
     }
 
@@ -69,16 +87,33 @@ class RecipeController extends Controller
      */
     public function updateRecipe($id, Request $request)
     {
-        $recipe = Recipe::where('id', $id)->first()->toArray();
-        if (!$request->isMethod('post')) {
-            return view('addRecipe', ['recipe' => $recipe]);
+        $recipe = Recipe::where('id', $id)->first();
+        $ingredients = $recipe->ingredients()->where('recipe_id', $id)->get();
 
+        if (!$request->isMethod('post')) {
+            return view('addRecipe', ['recipe' => $recipe->toArray(), 'ingredients' => $ingredients->toArray()]);
         }
 
         Recipe::where('id', $id)->update([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
         ]);
+
+        $updateRecipe = Recipe::find($id);
+        $ingredientTitles = $request->input('ingredient');
+        $ingredientQuantities = $request->input('quantity');
+        foreach ($ingredientTitles as $ingredientId => $ingredientTitle) {
+            $ingredient = Ingredient::where('title', $ingredientTitle)->first();
+            if ($ingredient) {
+                $updateRecipe->ingredients()->updateExistingPivot($ingredientId, ['quantity' => $ingredientQuantities[$ingredientId]]);
+            } else {
+                $ingredient = new Ingredient();
+                $ingredient->title = $ingredientTitle;
+                $ingredient->save();
+                $updateRecipe->ingredients()->attach($ingredientId, ['quantity' => $ingredientQuantities[$ingredientId]]);
+            }
+        }
+
         return redirect('recipe-list');
     }
 

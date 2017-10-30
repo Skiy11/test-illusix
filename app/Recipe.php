@@ -17,4 +17,9 @@ class Recipe extends Model
         'title',
         'description'
     ];
+
+    public function ingredients()
+    {
+        return $this->belongsToMany('App\Ingredient')->withPivot('ingredient_id', 'recipe_id', 'quantity');
+    }
 }

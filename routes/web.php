@@ -20,12 +20,20 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/recipe-list', 'RecipeController@recipeList')->name('recipe-list');
+
 Route::match(array('GET', 'POST'), 'add-recipe', 'RecipeController@addRecipe')->name('add-recipe');
 Route::get('/show-recipe/{id}', 'RecipeController@showRecipe')->name('show-recipe');
 Route::match(array('GET', 'POST'), 'update-recipe/{id}', 'RecipeController@updateRecipe')->name('update-recipe');
 Route::get('/remove-recipe/{id}', 'RecipeController@removeRecipe')->name('remove-recipe');
 
 Route::get('/ingredient-list', 'IngredientController@ingredientList')->name('ingredient-list');
+
 Route::match(array('GET', 'POST'), 'add-ingredient', 'IngredientController@addIngredient')->name('add-ingredient');
 Route::match(array('GET', 'POST'), 'update-ingredient/{id}', 'IngredientController@updateIngredient')->name('update-ingredient');
 Route::get('/remove-ingredient/{id}', 'IngredientController@removeIngredient')->name('remove-ingredient');
+
+Route::get('/recipe-ingredient/{id}', 'IngredientController@recipeWithThisIngredient')->name('recipe-ingredient');
+
+Route::post('/shop-list', 'IngredientController@shopList')->name('shop-list');
+
+Route::get('/autocomplete', 'IngredientController@autocomplete')->name('autocomplete');

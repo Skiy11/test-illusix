@@ -32,10 +32,45 @@
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Ингридиент</th>
+                <th scope="col">Количество</th>
+            </tr>
+            </thead>
+            <tbody class="input-fields-wrap">
+            @foreach($ingredients as $ingredient)
+                <tr>
+                    <td>
+                        <input type="text"
+                               class="typeahead form-control"
+                               name="ingredient[{{$ingredient['id'] ?: $ingredient['id']}}]"
+                               value="{{$ingredient['title'] ?: $ingredient['title']}}" >
+                    </td>
+                    <td>
+                        <input type="text"
+                               class="form-control"
+                               name="quantity[{{$ingredient['id'] ?: $ingredient['pivot']['id']}}]"
+                               value="{{$ingredient['pivot']['quantity'] ?: $ingredient['pivot']['quantity']}}" >
+                    </td>
+                    <td><a href="#" class="remove-field">Remove</a></td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
         <div class="form-group row">
-            <div class="col-sm-10">
+            <div class="col-sm-5">
+                <button type="button" class="btn btn-primary add-field-button">Добавить поле</button>
+            </div>
+            <div class="col-sm-5">
                 <button type="submit" class="btn btn-primary">{{$recipe['id'] ? 'Обновить рецепт' : 'Сохранить рецепт'}}</button>
             </div>
         </div>
     </form>
+@stop
+
+@section('js')
+    <script type='text/javascript' src='{{ asset("js/additional-fields.js") }}'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 @stop
