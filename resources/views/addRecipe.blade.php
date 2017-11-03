@@ -73,4 +73,9 @@
 @section('js')
     <script type='text/javascript' src='{{ asset("js/additional-fields.js") }}'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
+    <script>
+        var path = '<?php echo route('autocomplete') ?>';
+    </script>
+    <script type='text/javascript' src='{{ asset("js/autocomplite.js") }}'></script>
 @stop

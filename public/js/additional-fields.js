@@ -8,7 +8,8 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){
             x++;
-            $(wrapper).append('<tr> <td> <input type="text" class="form-control" name="ingredient[]" value="" > </td> <td> <input type="text" class="form-control" name="quantity[]" value="" > </td> <td><a href="#" class="remove-field">Remove</a></td> </tr>');
+            $(wrapper).append('<tr> <td> <input type="text" autocomplete="off" class="typeahead form-control" name="ingredient[]" value="" > </td> <td> <input type="text" class="form-control" name="quantity[]" value="" > </td> <td><a href="#" class="remove-field">Remove</a></td> </tr>');
+            initAutocomplite();
         }
     });
 

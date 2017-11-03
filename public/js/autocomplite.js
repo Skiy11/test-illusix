@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function initAutocomplite() {
     $('input.typeahead').typeahead({
         source:  function (query, process) {
             return $.get(path, { query: query }, function (data) {
@@ -6,4 +6,7 @@ $(document).ready(function() {
             });
         }
     });
+}
+$(document).ready(function() {
+    initAutocomplite();
 });
