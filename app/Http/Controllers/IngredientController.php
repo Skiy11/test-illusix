@@ -112,7 +112,7 @@ class IngredientController extends Controller
             $ingredients = array_merge($ingredients, $ingredient->all());
         }
 
-        return view('ingredient', ['ingredients' => $ingredients]);
+        return view('shopList', ['ingredients' => $ingredients]);
     }
 
     /**
